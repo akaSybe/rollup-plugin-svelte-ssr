@@ -1,0 +1,67 @@
+import fs from "fs";
+import del from "del";
+
+import { bundleWithRollup, resolvePath, resolveExpectedFile } from "./helpers";
+
+import plugin from "../dist";
+
+function readFile(fileName) {
+  return fs.readFileSync(fileName, { encoding: "utf-8" });
+}
+
+function expectHtmlEqual(actual, expected) {
+  expect(actual.trim()).toEqual(expected.trim());
+}
+
+describe("plugin tests", () => {
+  it("should emit html file", async () => {
+    const testName = "it-emits-html-file";
+    const outputFileName = `dist/${testName}.html`;
+    const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
+    const ssrOutputFile = resolvePath(testName, outputFileName);
+
+    const pluginOptions = {
+      fileName: ssrOutputFile,
+    };
+
+    await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
+
+    expect(fs.existsSync(ssrBundleFile)).toBeTruthy();
+    expect(fs.existsSync(ssrOutputFile)).toBeTruthy();
+
+    const expected = readFile(resolveExpectedFile(testName));
+    const actual = readFile(ssrOutputFile);
+
+    expectHtmlEqual(actual, expected);
+
+    // cleanup
+    // await del(resolvePath(testName, "dist"));
+  });
+
+  it("should respect props", async () => {
+    const testName = "it-respects-props";
+    const outputFileName = `dist/${testName}.html`;
+    const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
+    const ssrOutputFile = resolvePath(testName, outputFileName);
+
+    const pluginOptions = {
+      fileName: ssrOutputFile,
+      props: {
+        name: "world",
+      },
+    };
+
+    await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
+
+    expect(fs.existsSync(ssrBundleFile)).toBeTruthy();
+    expect(fs.existsSync(ssrOutputFile)).toBeTruthy();
+
+    const expected = readFile(resolveExpectedFile(testName));
+    const actual = readFile(ssrOutputFile);
+
+    expectHtmlEqual(actual, expected);
+
+    // cleanup
+    // await del(resolvePath(testName, "dist"));
+  });
+});
