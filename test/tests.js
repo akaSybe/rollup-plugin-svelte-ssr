@@ -156,7 +156,7 @@ describe("plugin tests", () => {
     await del(resolvePath(testName, "dist"));
   });
 
-  it("should use preprocessHtml option", async () => {
+  it("should use preprocessHtml/preprocessCss options", async () => {
     const testName = "it-respects-preprocess-html-css-options";
     const outputFileName = `dist/test.html`;
     const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
