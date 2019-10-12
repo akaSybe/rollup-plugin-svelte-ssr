@@ -84,4 +84,24 @@ describe("plugin tests", () => {
     // cleanup
     await del(resolvePath(testName, "dist"));
   });
+
+  it("should use filename function option", async () => {
+    const testName = "it-uses-filename-function";
+    const outputFileName = `dist/test.html`;
+    const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
+    const ssrOutputFile = resolvePath(testName, outputFileName);
+
+    const pluginOptions = {
+      fileName: function(file) {
+        return ssrOutputFile;
+      },
+    };
+
+    await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
+
+    expect(fs.existsSync(ssrOutputFile)).toBeTruthy();
+
+    // cleanup
+    await del(resolvePath(testName, "dist"));
+  });
 });
