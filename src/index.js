@@ -2,11 +2,6 @@ import vm from "vm";
 import fs from "fs";
 import { dirname, resolve, relative, sep as pathSeperator } from "path";
 
-const defaultOptions = {
-  /** do not emit SSR bundle */
-  skipEmit: false,
-};
-
 function wrapModuleExports(code) {
   return `
     function getModuleExports() {
@@ -18,6 +13,17 @@ function wrapModuleExports(code) {
     }
   `;
 }
+
+function defaultExport(html, css) {
+  const style = css ? `<style>${css}</style>` : "";
+  return `${style}${html}`;
+}
+
+const defaultOptions = {
+  /** do not emit SSR bundle */
+  skipEmit: false,
+  configureExport: defaultExport,
+};
 
 /** */
 export default function ssr(options = {}) {
@@ -78,7 +84,7 @@ export default function ssr(options = {}) {
 
         const destination = resolve(destDir, fileName);
         fs.mkdirSync(dirname(destination), { recursive: true });
-        fs.writeFileSync(destination, html);
+        fs.writeFileSync(destination, pluginOptions.configureExport(html, css));
 
         if (pluginOptions.skipEmit) {
           // You can prevent files from being emitted by deleting them from the bundle object.

@@ -104,4 +104,55 @@ describe("plugin tests", () => {
     // cleanup
     await del(resolvePath(testName, "dist"));
   });
+
+  it("should place styles before markup by default", async () => {
+    const testName = "it-puts-styles-before-html-by-default";
+    const outputFileName = `dist/test.html`;
+    const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
+    const ssrOutputFile = resolvePath(testName, outputFileName);
+
+    const pluginOptions = {
+      fileName: ssrOutputFile,
+    };
+
+    await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
+
+    expect(fs.existsSync(ssrBundleFile)).toBeTruthy();
+    expect(fs.existsSync(ssrOutputFile)).toBeTruthy();
+
+    const expected = readFile(resolveExpectedFile(testName));
+    const actual = readFile(ssrOutputFile);
+
+    expectHtmlEqual(actual, expected);
+
+    // cleanup
+    await del(resolvePath(testName, "dist"));
+  });
+
+  it("should use configureExport option", async () => {
+    const testName = "it-respects-configure-export-option";
+    const outputFileName = `dist/test.html`;
+    const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
+    const ssrOutputFile = resolvePath(testName, outputFileName);
+
+    const pluginOptions = {
+      fileName: ssrOutputFile,
+      configureExport: function(html, css) {
+        return `${html}<style>${css}</style>`;
+      },
+    };
+
+    await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
+
+    expect(fs.existsSync(ssrBundleFile)).toBeTruthy();
+    expect(fs.existsSync(ssrOutputFile)).toBeTruthy();
+
+    const expected = readFile(resolveExpectedFile(testName));
+    const actual = readFile(ssrOutputFile);
+
+    expectHtmlEqual(actual, expected);
+
+    // cleanup
+    await del(resolvePath(testName, "dist"));
+  });
 });
