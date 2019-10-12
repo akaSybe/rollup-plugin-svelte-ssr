@@ -155,4 +155,34 @@ describe("plugin tests", () => {
     // cleanup
     await del(resolvePath(testName, "dist"));
   });
+
+  it("should use preprocessHtml option", async () => {
+    const testName = "it-respects-preprocess-html-css-options";
+    const outputFileName = `dist/test.html`;
+    const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
+    const ssrOutputFile = resolvePath(testName, outputFileName);
+
+    const pluginOptions = {
+      fileName: ssrOutputFile,
+      preprocessHtml: function(html) {
+        return "<pre>replaced</pre>"
+      },
+      preprocessCss: function(css) {
+        return "body { opacity: 0; }";
+      }
+    };
+
+    await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
+
+    expect(fs.existsSync(ssrBundleFile)).toBeTruthy();
+    expect(fs.existsSync(ssrOutputFile)).toBeTruthy();
+
+    const expected = readFile(resolveExpectedFile(testName));
+    const actual = readFile(ssrOutputFile);
+
+    expectHtmlEqual(actual, expected);
+
+    // cleanup
+    // await del(resolvePath(testName, "dist"));
+  });
 });
