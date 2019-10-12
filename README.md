@@ -1,6 +1,6 @@
 # rollup-plugin-svelte-ssr
 
-Server-side rendering of Svelte app at build-time using Rollup
+Server-side rendering of Svelte app at build-time using Rollup plugin
 
 ## Basic example
 

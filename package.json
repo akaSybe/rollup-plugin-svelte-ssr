@@ -1,7 +1,7 @@
 {
   "name": "rollup-plugin-svelte-ssr",
   "version": "1.0.0",
-  "description": "",
+  "description": "Server-side rendering of Svelte app at build-time using Rollup plugin",
   "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c",
@@ -23,10 +23,6 @@
     "url": "https://github.com/akaSybe/rollup-plugin-svelte-ssr/issues"
   },
   "homepage": "https://github.com/akaSybe/rollup-plugin-svelte-ssr#readme",
-  "dependencies": {
-    "html-minifier": "^4.0.0",
-    "rollup-pluginutils": "^2.8.2"
-  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-transform-runtime": "^7.6.2",
