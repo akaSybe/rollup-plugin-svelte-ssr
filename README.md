@@ -1,3 +1,9 @@
+# rollup-plugin-svelte-ssr
+
+Server-side rendering of Svelte app at build-time using Rollup
+
+## Basic example
+
 Let's assume that we have basic svelte component `src/App.svelte`:
 
 ```svelte
@@ -48,4 +54,36 @@ In `dist` directory we get `ssr.html` that contains SSR-ed app:
 
 ```
 <style>div.svelte-6xs8g3{color:red}</style><div class="svelte-6xs8g3">Hello</div>
+```
+
+## Options
+
+```
+ssr({
+  // allow to set output file name
+  fileName: 'ssr.html',
+  // or
+  // where entry is Rollup entry
+  fileName: function(entry) {
+    return "ssr.html"
+  }
+  // root component props
+  props: {
+    name: 'Hello',
+  },
+  // allow to skip emit of js file
+  skipEmit: false,
+  // allow to preprocess html
+  preprocessHtml: function(html) {
+    return html;
+  },
+  // allow to preprocess css
+  preprocessCss: function(css) {
+    return css;
+  },
+  // customize output
+  configureExport: function(html, css) {
+    return `<style>${css}</style>${html}`;
+  }
+})
 ```
