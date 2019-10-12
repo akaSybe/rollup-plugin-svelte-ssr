@@ -2,7 +2,7 @@
   "name": "rollup-plugin-svelte-ssr",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
@@ -32,8 +32,8 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.3",
     "@babel/runtime": "^7.6.3",
+    "@types/jest": "^24.0.18",
     "del": "^5.1.0",
-    "fs-extra": "^8.1.0",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "rollup": "^1.23.1",

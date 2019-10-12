@@ -3,7 +3,7 @@ import del from "del";
 
 import { bundleWithRollup, resolvePath, resolveExpectedFile } from "./helpers";
 
-import plugin from "../dist";
+import plugin from "../src";
 
 function readFile(fileName) {
   return fs.readFileSync(fileName, { encoding: "utf-8" });
@@ -35,7 +35,7 @@ describe("plugin tests", () => {
     expectHtmlEqual(actual, expected);
 
     // cleanup
-    // await del(resolvePath(testName, "dist"));
+    await del(resolvePath(testName, "dist"));
   });
 
   it("should respect props", async () => {
@@ -62,6 +62,26 @@ describe("plugin tests", () => {
     expectHtmlEqual(actual, expected);
 
     // cleanup
-    // await del(resolvePath(testName, "dist"));
+    await del(resolvePath(testName, "dist"));
+  });
+
+  it("should skip emit bundle if skipEmit=true", async () => {
+    const testName = "it-skips-emit";
+    const outputFileName = `dist/${testName}.html`;
+    const ssrBundleFile = resolvePath(testName, "dist/ssr.js");
+    const ssrOutputFile = resolvePath(testName, outputFileName);
+
+    const pluginOptions = {
+      fileName: ssrOutputFile,
+      skipEmit: true,
+    };
+
+    await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
+
+    expect(fs.existsSync(ssrBundleFile)).toBeFalsy();
+    expect(fs.existsSync(ssrOutputFile)).toBeTruthy();
+
+    // cleanup
+    await del(resolvePath(testName, "dist"));
   });
 });

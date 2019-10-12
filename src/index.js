@@ -1,12 +1,10 @@
 import vm from "vm";
-import fs from "fs-extra";
-import { resolve, relative, sep as pathSeperator } from "path";
+import fs from "fs";
+import { dirname, resolve, relative, sep as pathSeperator } from "path";
 
 const defaultOptions = {
   /** do not emit SSR bundle */
   skipEmit: false,
-  props: {},
-  includeStyles: true,
 };
 
 function wrapModuleExports(code) {
@@ -32,13 +30,9 @@ export default function ssr(options = {}) {
     throw new Error("options.fileName should be string or function");
   }
 
-  // console.log(pluginOptions);
-
   return {
     name: "svelte-ssr",
     async generateBundle(config, bundle, isWrite) {
-      console.log("generateBundle");
-      // console.log(config);
       const destPath = relative("./", config.file);
       const destDir = destPath.slice(0, destPath.indexOf(pathSeperator));
 
@@ -82,7 +76,9 @@ export default function ssr(options = {}) {
             ? pluginOptions.fileName(entry)
             : pluginOptions.fileName;
 
-        await fs.outputFile(resolve(destDir, fileName), html);
+        const destination = resolve(destDir, fileName);
+        fs.mkdirSync(dirname(destination), { recursive: true });
+        fs.writeFileSync(destination, html);
 
         if (pluginOptions.skipEmit) {
           // You can prevent files from being emitted by deleting them from the bundle object.
