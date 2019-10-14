@@ -10,5 +10,18 @@ cache:
 install:
   - npm ci
 
-script:
-  - npm run test
+stages:
+  - test
+  - release
+
+jobs:
+  include:
+    - stage: test
+      name: "tests"
+      script:
+        - npm run test
+    - stage: release
+      name: "release"
+      if: branch = master
+      script:
+        - npm run semantic-release
