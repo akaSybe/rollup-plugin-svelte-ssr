@@ -24,8 +24,3 @@ jobs:
       if: branch = master
       script:
         - npm run semantic-release
-
-deploy:
-  provider: npm
-  email: "akasybe@gmail.com"
-  api_key: "$NPM_TOKEN"

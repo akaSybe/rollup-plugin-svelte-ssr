@@ -67,7 +67,11 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
+      ["@semantic-release/npm",
+        {
+          "allowSameVersion": true
+        }
+      ],
       "@semantic-release/github",
       [
         "@semantic-release/git",
