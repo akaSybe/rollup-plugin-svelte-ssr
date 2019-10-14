@@ -28,4 +28,4 @@ jobs:
 deploy:
   provider: npm
   email: "akasybe@gmail.com"
-  api_key: "a2106656-e3ea-40cf-b68a-954fe4047dee"
+  api_key: "$NPM_TOKEN"
