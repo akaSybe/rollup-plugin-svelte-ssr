@@ -24,3 +24,8 @@ jobs:
       if: branch = master
       script:
         - npm run semantic-release
+
+deploy:
+  provider: npm
+  email: "akasybe@gmail.com"
+  api_key: "a2106656-e3ea-40cf-b68a-954fe4047dee"
