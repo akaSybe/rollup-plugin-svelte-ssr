@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-svelte-ssr",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Server-side rendering of Svelte app at build-time using Rollup plugin",
   "main": "dist/index.js",
   "scripts": {
