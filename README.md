@@ -22,7 +22,7 @@ Let's assume that we have basic svelte component `src/App.svelte`:
 
 Let's use `rollup-plugin-svelte-ssr` in `rollup.config.js`:
 
-```
+```js
 // ... other imports
 
 import ssr from "rollup-plugin-svelte-ssr";
@@ -52,13 +52,13 @@ export default {
 
 In `dist` directory we get `ssr.html` that contains SSR-ed app:
 
-```
+```html
 <style>div.svelte-6xs8g3{color:red}</style><div class="svelte-6xs8g3">Hello</div>
 ```
 
 ## Options
 
-```
+```js
 ssr({
   // allow to set output file name
   fileName: 'ssr.html',
