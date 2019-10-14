@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-svelte-ssr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Server-side rendering of Svelte app at build-time using Rollup plugin",
   "main": "dist/index.js",
   "scripts": {
@@ -67,11 +67,7 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      ["@semantic-release/npm",
-        {
-          "allowSameVersion": true
-        }
-      ],
+      "@semantic-release/npm",
       "@semantic-release/github",
       [
         "@semantic-release/git",
