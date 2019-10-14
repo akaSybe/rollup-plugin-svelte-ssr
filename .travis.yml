@@ -1,7 +1,10 @@
 language: node_js
 
 node_js:
- - "lts/*"
+  - "lts/*"
+
+notifications:
+  email: true
 
 install:
   - npm ci
