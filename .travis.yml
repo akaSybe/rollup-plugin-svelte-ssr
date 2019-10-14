@@ -1,0 +1,23 @@
+language: node_js
+
+node_js:
+ - "lts/*"
+
+install:
+  - npm ci
+
+stages:
+  - test
+  - release
+
+jobs:
+  include:
+    - stage: test
+      name: "tests"
+      script:
+        - npm run test
+    - stage: release
+      name: "release"
+      if: branch = master
+      script:
+        - npm run semantic-release
