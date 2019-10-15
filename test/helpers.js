@@ -13,7 +13,7 @@ export function resolveExpectedFile(testName) {
   return resolvePath(testName, "expected.html");
 }
 
-export async function bundleWithRollup({ plugin, pluginOptions, testName, output }) {
+export async function bundleWithRollup({ plugin, pluginOptions, testName, output, format = "cjs" }) {
   const bundle = await rollup({
     input: resolvePath(testName, "App.svelte"),
     plugins: [
@@ -30,7 +30,7 @@ export async function bundleWithRollup({ plugin, pluginOptions, testName, output
   });
 
   await bundle.write({
-    format: "cjs",
+    format,
     file: output,
   });
 }

@@ -165,11 +165,11 @@ describe("plugin tests", () => {
     const pluginOptions = {
       fileName: ssrOutputFile,
       preprocessHtml: function(html) {
-        return "<pre>replaced</pre>"
+        return "<pre>replaced</pre>";
       },
       preprocessCss: function(css) {
         return "body { opacity: 0; }";
-      }
+      },
     };
 
     await bundleWithRollup({ plugin, pluginOptions, testName, output: ssrBundleFile });
@@ -183,6 +183,47 @@ describe("plugin tests", () => {
     expectHtmlEqual(actual, expected);
 
     // cleanup
-    // await del(resolvePath(testName, "dist"));
+    await del(resolvePath(testName, "dist"));
+  });
+
+  it("should throw error for non-cjs format", async () => {
+    const pluginOptions = {
+      fileName: "doesnt-matter.html",
+      skipEmit: true,
+    };
+
+    let error;
+    try {
+      await bundleWithRollup({
+        format: "esm",
+        plugin,
+        pluginOptions,
+        testName: "it-throws-error-for-non-cjs-format",
+        output: "doesnt-matter.html",
+      });
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toEqual(new Error("rollup-plugin-svelte-ssr can only be used with 'cjs'-format"));
+  });
+
+  it("should throw error if no filename option has been passed", async () => {
+    const pluginOptions = {
+      skipEmit: true,
+    };
+
+    let error;
+    try {
+      await bundleWithRollup({
+        format: "esm",
+        plugin,
+        pluginOptions,
+        testName: "it-throws-error-if-no-filename-passed",
+        output: "doesnt-matter.html",
+      });
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toEqual(new Error("options.fileName should be string or function"));
   });
 });
