@@ -192,19 +192,15 @@ describe("plugin tests", () => {
       skipEmit: true,
     };
 
-    let error;
-    try {
-      await bundleWithRollup({
+    await expect(
+      bundleWithRollup({
         format: "esm",
         plugin,
         pluginOptions,
         testName: "it-throws-error-for-non-cjs-format",
         output: "doesnt-matter.html",
-      });
-    } catch (e) {
-      error = e;
-    }
-    expect(error).toEqual(new Error("rollup-plugin-svelte-ssr can only be used with 'cjs'-format"));
+      }),
+    ).rejects.toThrow(new Error("rollup-plugin-svelte-ssr can only be used with 'cjs'-format"));
   });
 
   it("should throw error if no filename option has been passed", async () => {
@@ -215,7 +211,6 @@ describe("plugin tests", () => {
     let error;
     try {
       await bundleWithRollup({
-        format: "esm",
         plugin,
         pluginOptions,
         testName: "it-throws-error-if-no-filename-passed",
