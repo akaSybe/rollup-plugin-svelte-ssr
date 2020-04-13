@@ -1,6 +1,6 @@
 import vm from "vm";
 import fs from "fs";
-import { dirname, resolve, relative, sep as pathSeperator } from "path";
+import path from "path";
 
 function wrapModuleExports(code) {
   return `
@@ -39,8 +39,12 @@ export default function ssr(options = {}) {
   return {
     name: "svelte-ssr",
     async generateBundle(config, bundle, isWrite) {
-      const destPath = relative("./", config.file);
-      const destDir = destPath.slice(0, destPath.indexOf(pathSeperator));
+      if (config.format !== "cjs") {
+        throw new Error("rollup-plugin-svelte-ssr can only be used with 'cjs'-format");
+      }
+
+      const destPath = path.relative("./", config.file);
+      const destDir = destPath.slice(0, destPath.indexOf(path.sep));
 
       Object.keys(bundle).forEach(async key => {
         const entry = bundle[key];
@@ -82,8 +86,8 @@ export default function ssr(options = {}) {
             ? pluginOptions.fileName(entry)
             : pluginOptions.fileName;
 
-        const destination = resolve(destDir, fileName);
-        fs.mkdirSync(dirname(destination), { recursive: true });
+        const destination = path.resolve(destDir, fileName);
+        fs.mkdirSync(path.dirname(destination), { recursive: true });
         fs.writeFileSync(destination, pluginOptions.configureExport(html, css));
 
         if (pluginOptions.skipEmit) {
