@@ -25,6 +25,9 @@
     "url": "https://github.com/akaSybe/rollup-plugin-svelte-ssr/issues"
   },
   "homepage": "https://github.com/akaSybe/rollup-plugin-svelte-ssr#readme",
+  "dependencies": {
+    "@semantic-release/git": "^7.0.16"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-transform-runtime": "^7.6.2",
@@ -45,6 +48,9 @@
     "semantic-release": "^15.13.24",
     "svelte": "^3.12.1"
   },
+  "files": [
+    "dist"
+  ],
   "jest": {
     "testMatch": [
       "<rootDir>/test/**/tests.js"
@@ -79,8 +85,5 @@
         }
       ]
     ]
-  },
-  "dependencies": {
-    "@semantic-release/git": "^7.0.16"
   }
 }
