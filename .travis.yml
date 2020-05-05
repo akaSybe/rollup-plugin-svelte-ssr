@@ -23,4 +23,5 @@ jobs:
       name: "release"
       if: branch = master
       script:
+        - npm run build
         - npm run semantic-release
