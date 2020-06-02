@@ -44,7 +44,7 @@ export default function ssr(options = {}) {
       }
 
       const destPath = path.relative("./", config.file);
-      const destDir = destPath.slice(0, destPath.indexOf(path.sep));
+      const destDir = destPath.slice(0, destPath.lastIndexOf(path.sep));
 
       Object.keys(bundle).forEach(async key => {
         const entry = bundle[key];
